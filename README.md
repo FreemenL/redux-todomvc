@@ -1,5 +1,5 @@
 # redux-todomvc
-redux-todomvc
+ 手写 redux中的中间件 
 ###### logger
 ```bash
 /**
