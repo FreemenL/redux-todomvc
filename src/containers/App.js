@@ -14,7 +14,7 @@ class  App extends Component{
 		let {actions,todos} = this.props;
 		return(
 			<div>
-				<Header addTodo={actions.addTodo}/>
+				<Header addTodo={actions.addTodos}/>
 				<MainSection todos={todos} actions={actions}/>
 			</div>
 		)
