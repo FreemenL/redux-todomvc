@@ -45,7 +45,12 @@ const promise = ({dispatch,getState})=>next=>action=>{
      }
 }
 
-
+/**
+ * [componse description] 串接各个中间件 
+ *第一次执行的时候a的值为add3  b的值为add2  
+ *第二次执行的时候 a的值就是add3(add2)的结果 b的值就是add1
+ *所以这个地方就有个递归的关系  也就是实际的执行结果是从右往做的
+ */
 function componse(...fns){
 	return fns.reduce((a,b)=>(...args)=>a(b(...args)));
 }
@@ -65,16 +70,19 @@ const applyMiddleware = (...middlewares)=>(createStore)=>(reducer)=>{
 	}
 	//把 getState 和 dispath 方法传给 各个中间件 
 	middlewares = middlewares.map( middleware => middleware(middlewareAPI) );
-	//包装后的dispatch 方法 
+	//包装后的dispatch 传给各个中间件   
 	dispatch = componse(...middlewares)(store.dispatch);
 
 	return { ...store, dispatch };
 }
 
+// let store = applyMiddleware(thunk,promise)(createStore)(reducer);
+
+let store =createStore(reducer,applyMiddleware(logger,thunk,promise));
 
 
-let store =createStore(reducer,applyMiddleware(thunk,promise));
 
+console.log(store)
 // console.log(dispatch);
 render(
     <Provider store={store}>
